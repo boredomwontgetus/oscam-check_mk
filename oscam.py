@@ -5,16 +5,16 @@ from requests.auth import HTTPDigestAuth
 import xmltodict
 
 # modify this: set this to the name of your local cardreader
-local_cardname = 'my-local-cardreaders-name'
+local_cardname = 'name-of-your-local-cardreader'
 
 # modify this: API connection details 
 url      = 'http://localhost:16002/oscamapi.html?part=status'
-username = 'myusername'
-password = 'supers3cr3t'
+username = 'adminusername'
+password = 'adminpassword'
 
 # modify this: define service status by "bad" cards
-ok   = '0';   # service is OK if 0 bad cards
-warn = '4';   # service is WARN if greather or equal than n bad card
+ok   = 0;   # service is OK if 0 bad cards
+warn = 4;   # service is WARN if greather or equal than n bad card
 
 
 filtered = dict()
@@ -27,7 +27,6 @@ def receive():
 def filter(e, filtered):
   if e['@type'] == 'p' or e['@type'] == 'r':
     filtered[e['@name']] = e['connection']['#text']
-
 
 
 xml = receive()
@@ -45,4 +44,4 @@ if cardsTotal - cardsGood >= warn:
 if filtered[local_cardname] != 'CARDOK':
   state = 2
 
-print '%d oscam_cards count=%d|good=%d|bad=%d %d cards, %d bad, %d good' % (state, cardsTotal, cardsGood, cardsBad, cardsTotal, cardsBad, cardsGood)
+print('%d oscam_cards count=%d|good=%d|bad=%d %d cards, %d bad, %d good'%(state, cardsTotal, cardsGood, cardsBad, cardsTotal, cardsBad, cardsGood))
